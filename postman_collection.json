@@ -1,0 +1,252 @@
+{
+  "info": {
+    "name": "Digital Wallet Platform API",
+    "description": "Postman collection for the Digital Wallet Platform. Set baseUrl and accessToken in collection variables before testing. Verify request body fields and endpoint paths against the running FastAPI Swagger UI at {{baseUrl}}/docs. Some schemas may differ from these illustrative examples.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "PASTE_ACCESS_TOKEN_HERE",
+      "type": "string"
+    },
+    {
+      "key": "walletId",
+      "value": "2",
+      "type": "string"
+    },
+    {
+      "key": "receiverWalletId",
+      "value": "4",
+      "type": "string"
+    },
+    {
+      "key": "transferId",
+      "value": "3",
+      "type": "string"
+    },
+    {
+      "key": "idempotencyKey",
+      "value": "wallet-transfer-unique-001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login (verify form fields in Swagger)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "user@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "your_password",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/auth/login",
+            "description": "OAuth2 password-form example. Update the path or fields if Swagger shows a different login schema."
+          }
+        },
+        {
+          "name": "Get Current User (verify path in Swagger)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/auth/me",
+            "description": "Example protected current-user endpoint; confirm the actual route in Swagger."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wallets",
+      "item": [
+        {
+          "name": "List Wallets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/wallets",
+            "description": "List wallets accessible to the authenticated user. Confirm pagination/filter parameters in Swagger."
+          }
+        },
+        {
+          "name": "Create Wallet (example body)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/wallets",
+            "description": "Example only: adjust the request body to match the actual wallet schema."
+          }
+        },
+        {
+          "name": "Get Wallet by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/wallets/{{walletId}}"
+          }
+        },
+        {
+          "name": "Freeze Wallet",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": "{{baseUrl}}/api/wallets/{{walletId}}/freeze"
+          }
+        },
+        {
+          "name": "Unfreeze Wallet",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": "{{baseUrl}}/api/wallets/{{walletId}}/unfreeze"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Deposits",
+      "item": [
+        {
+          "name": "Create Deposit (example body)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{idempotencyKey}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"100.00\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/deposits/wallets/{{walletId}}/deposits",
+            "description": "Known route from project context. Confirm the accepted request fields in Swagger."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transfers",
+      "item": [
+        {
+          "name": "Create Transfer (example body)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{idempotencyKey}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sender_wallet_id\": 2,\n  \"receiver_wallet_id\": 4,\n  \"amount\": \"100.00\",\n  \"currency\": \"USD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/transfers",
+            "description": "Example body. Confirm the transfer schema and route in Swagger."
+          }
+        },
+        {
+          "name": "Get Transfer by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/transfers/{{transferId}}"
+          }
+        },
+        {
+          "name": "Cancel Transfer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/transfers/{{transferId}}/cancel",
+            "description": "Cancellation may be rejected for transfers that have already completed."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health and API Docs",
+      "item": [
+        {
+          "name": "OpenAPI Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/openapi.json",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

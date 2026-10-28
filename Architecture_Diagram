@@ -1,0 +1,41 @@
+         +---------------------------+
+         |      Client / Postman     |
+         +---------------------------+
+                      |
+                      v
+         +---------------------------+
+         |    FastAPI Application    |
+         +---------------------------+
+                      |
+                      v
+         +---------------------------+
+         | Authentication &          |
+         | Authorization (JWT)       |
+         +---------------------------+
+                      |
+                      v
+         +---------------------------+
+         |       API Routers         |
+         | Wallets, Deposits,        |
+         | Transfers, Withdrawals    |
+         +---------------------------+
+                      |
+                      v
+         +---------------------------+
+         |       Service Layer       |
+         | Business Logic,           |
+         | Validation, Transactions  |
+         +---------------------------+
+                      |
+                      v
+         +---------------------------+
+         | Repository / SQLAlchemy   |
+         | Database Operations       |
+         +---------------------------+
+                      |
+                      v
+         +---------------------------+
+         |     PostgreSQL Database   |
+         | Users, Wallets, Ledger,   |
+         | Transfers, Audit Logs     |
+         +---------------------------+

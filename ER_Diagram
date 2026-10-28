@@ -1,0 +1,97 @@
++----------------------+
+|        USERS         |
++----------------------+
+| PK id                |
+| full_name            |
+| email                |
+| hashed_password      |
+| role                 |
+| is_active            |
++----------------------+
+           |
+           | 1
+           |
+           | N
++----------------------+
+|       WALLETS        |
++----------------------+
+| PK id                |
+| FK user_id           |
+| available_balance    |
+| pending_balance      |
+| currency             |
+| status               |
++----------------------+
+      |          |
+      |          |
+      v          v
++-------------+  +------------------+
+|  DEPOSITS   |  |    TRANSFERS     |
++-------------+  +------------------+
+| PK id       |  | PK id            |
+| FK wallet_id|  | FK sender_wallet_id
+| amount      |  | FK receiver_wallet_id
+| status      |  | amount            |
+| reference   |  | status            |
++-------------+  | reference         |
+                 +------------------+
+
+           |
+           | 1
+           |
+           | N
++----------------------+
+| TRANSACTION_LEDGER   |
++----------------------+
+| PK id                |
+| FK wallet_id         |
+| transaction_type     |
+| amount               |
+| balance_before       |
+| balance_after        |
+| reference_entity     |
+| reference_id         |
+| created_at           |
++----------------------+
+
++----------------------+
+|     WITHDRAWALS      |
++----------------------+
+| PK id                |
+| FK wallet_id         |
+| amount               |
+| currency             |
+| status               |
+| reference            |
++----------------------+
+
++----------------------+
+|      AUDIT_LOGS      |
++----------------------+
+| PK id                |
+| FK user_id           |
+| action               |
+| entity               |
+| entity_id            |
+| created_at            |
++----------------------+
+
++----------------------+
+|  TRANSACTION_LIMITS  |
++----------------------+
+| PK id                |
+| FK user_id           |
+| daily_deposit_limit  |
+| daily_withdrawal_limit
+| daily_transfer_limit |
++----------------------+
+
++----------------------+
+|     NOTIFICATIONS    |
++----------------------+
+| PK id                |
+| FK user_id           |
+| title                |
+| message              |
+| is_read              |
++----------------------+
